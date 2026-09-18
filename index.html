@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSNL 5K Mini Marathon — Registration</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --purple:#5b2c82;
+    --purple2:#7c4fa6;
+    --teal:#1f7a74;
+    --teal2:#28a79f;
+    --gold:#f5a623;
+    --bsnl-blue:#0055a4;
+    --bsnl-red:#e30613;
+    --bg:#f6f9fa;
+    --ink:#152229;
+    --muted:#5c6b73;
+    --card:#ffffff;
+    --line:rgba(15,35,40,0.08);
+  }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  a{ text-decoration:none; }
+  img{ max-width:100%; display:block; }
+
+  .reveal{ opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 6%;
+    background:transparent;
+    transition:background .3s ease, box-shadow .3s ease, padding .3s ease;
+  }
+  nav.scrolled{
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(12px);
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+    padding:12px 6%;
+  }
+  .logo-img{ height:44px; width:auto; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3)); transition:height .3s; }
+  nav.scrolled .logo-img{ height:38px; filter:none; }
+  .nav-links{ display:flex; gap:26px; font-size:14px; }
+  .nav-links a{ color:#fff; transition:color .3s; font-weight:600; text-shadow:0 1px 4px rgba(0,0,0,0.4); }
+  nav.scrolled .nav-links a{ color:var(--muted); text-shadow:none; }
+  .nav-links a:hover{ color:var(--teal2); }
+  .nav-cta{
+    background:linear-gradient(135deg,var(--teal),var(--teal2));
+    padding:10px 22px; border-radius:30px; color:#fff; font-weight:700; font-size:14px;
+    box-shadow:0 4px 15px rgba(31,122,116,0.3);
+    transition:transform .3s;
+  }
+  .nav-cta:hover{ transform:translateY(-2px); }
+
+  /* ---------- HERO — FULL-BLEED PHOTO STYLE ---------- */
+  .hero{
+    min-height:100vh;
+    position:relative;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:0 6% 90px;
+    overflow:hidden;
+    /* Replace the gradient below with your real event photo:
+       background: linear-gradient(...), url('YOUR-PHOTO-LINK') center/cover no-repeat; */
+    background:
+      linear-gradient(180deg, rgba(18,20,38,0.35) 0%, rgba(14,16,30,0.55) 55%, rgba(10,10,20,0.88) 100%),
+      radial-gradient(circle at 25% 30%, rgba(91,44,130,0.9), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(31,122,116,0.9), transparent 55%),
+      linear-gradient(135deg, #1a1230 0%, #0e2a28 60%, #12203a 100%);
+    background-size:cover;
+  }
+  .hero-topbar{
+    position:absolute; top:100px; left:6%; right:6%;
+    display:flex; justify-content:space-between; align-items:flex-start; z-index:2;
+  }
+  .hero-pill{
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.25);
+    padding:10px 18px; border-radius:40px;
+    color:#fff; font-size:13px; font-weight:600;
+  }
+  .float-countdown{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:20px;
+    padding:16px 20px;
+    display:flex; gap:16px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+  }
+  .float-countdown div{ text-align:center; }
+  .float-countdown .num{ color:#fff; font-size:24px; font-weight:800; }
+  .float-countdown .label{ color:rgba(255,255,255,0.7); font-size:10px; letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
+
+  .hero-content{ position:relative; z-index:2; max-width:800px; }
+  .hero h1{
+    font-size:clamp(46px,9vw,100px);
+    font-weight:900;
+    font-style:italic;
+    line-height:0.98;
+    letter-spacing:-2px;
+    color:#fff;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    text-shadow:0 8px 30px rgba(0,0,0,0.4);
+  }
+  .hero h1 span{ color:var(--teal2); }
+  .hero p.sub{
+    font-size:clamp(15px,2vw,18px);
+    color:rgba(255,255,255,0.82);
+    max-width:560px;
+    margin-bottom:34px;
+    line-height:1.5;
+  }
+  .hero-buttons{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--teal),var(--teal2));
+    color:#fff; font-weight:700; font-size:16px;
+    padding:17px 38px; border-radius:50px;
+    box-shadow:0 10px 25px rgba(31,122,116,0.4);
+    transition:transform .3s, box-shadow .3s;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .btn-primary:hover{ transform:translateY(-4px) scale(1.03); box-shadow:0 15px 35px rgba(31,122,116,0.5); }
+  .btn-secondary{
+    background:rgba(255,255,255,0.1);
+    border:2px solid rgba(255,255,255,0.5);
+    backdrop-filter:blur(6px);
+    color:#fff; font-weight:700; font-size:16px;
+    padding:15px 32px; border-radius:50px;
+    transition:all .3s;
+  }
+  .btn-secondary:hover{ background:#fff; color:var(--purple); border-color:#fff; }
+
+  .hero-organizer{ margin-top:26px; font-size:13px; color:rgba(255,255,255,0.6); font-weight:500; }
+
+  .runner-icon{ width:32px; height:32px; flex-shrink:0; }
+  .runner-row{ display:flex; align-items:flex-end; gap:24px; justify-content:center; margin-top:40px; opacity:0.9; }
+  .runner-row .runner-icon:nth-child(1){ color:var(--purple); animation:bob 2.6s ease-in-out infinite; }
+  .runner-row .runner-icon:nth-child(2){ color:var(--gold); animation:bob 2.6s ease-in-out infinite .15s; }
+  .runner-row .runner-icon:nth-child(3){ color:var(--teal); animation:bob 2.6s ease-in-out infinite .3s; height:42px; width:42px; }
+  .runner-row .runner-icon:nth-child(4){ color:var(--bsnl-blue); animation:bob 2.6s ease-in-out infinite .45s; }
+  .runner-row .runner-icon:nth-child(5){ color:var(--purple2); animation:bob 2.6s ease-in-out infinite .6s; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
+
+  .countdown{ display:flex; gap:14px; margin-top:44px; flex-wrap:wrap; justify-content:center; }
+  .countdown div{
+    border-radius:14px; overflow:hidden; min-width:78px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  }
+  .countdown .num{ background:var(--teal); color:#fff; font-size:28px; font-weight:800; padding:14px 0 8px; }
+  .countdown .label{ background:var(--purple); color:#fff; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:6px 0 10px; }
+
+  .org-strip{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    background:#fff;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:18px 6%;
+    font-size:13px; color:var(--muted); letter-spacing:0.3px;
+    flex-wrap:wrap; text-align:center;
+  }
+  .org-strip strong{ color:var(--ink); }
+  .org-strip .dot{ width:5px; height:5px; border-radius:50%; background:var(--gold); }
+
+  .nav-icon{ width:22px; height:22px; color:var(--purple); }
+  .foot-icon{ width:20px; height:20px; color:var(--teal2); }
+
+  /* ---------- SECTION WRAP ---------- */
+  section{ padding:90px 6%; max-width:1200px; margin:0 auto; }
+  .section-title{ text-align:center; font-size:clamp(28px,4vw,40px); font-weight:800; margin-bottom:12px; color:var(--ink); }
+  .section-sub{ text-align:center; color:var(--muted); max-width:560px; margin:0 auto 55px; font-size:15px; }
+
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:22px; }
+  .stat-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:0 8px 24px rgba(15,35,40,0.05);
+    border-radius:18px; padding:30px 18px; text-align:center;
+    transition:transform .3s;
+  }
+  .stat-card:hover{ transform:translateY(-6px); }
+  .stat-card .num{ font-size:34px; font-weight:900; color:var(--purple); }
+  .stat-card .lbl{ color:var(--muted); font-size:13px; margin-top:6px; }
+
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:0 8px 24px rgba(15,35,40,0.05);
+    border-radius:18px; padding:32px 26px;
+    transition:transform .3s, box-shadow .3s;
+  }
+  .card:hover{ transform:translateY(-8px); box-shadow:0 16px 34px rgba(15,35,40,0.1); }
+  .card .icon{ font-size:32px; margin-bottom:14px; }
+  .card h3{ font-size:18px; margin-bottom:8px; color:var(--ink); }
+  .card p{ font-size:14px; color:var(--muted); line-height:1.6; }
+
+  .timeline{ display:flex; flex-direction:column; gap:0; max-width:600px; margin:0 auto; }
+  .t-item{ display:flex; gap:22px; position:relative; padding-bottom:34px; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-dot{
+    width:14px; height:14px; border-radius:50%;
+    background:var(--teal); margin-top:5px; flex-shrink:0; position:relative; z-index:2;
+    box-shadow:0 0 0 5px rgba(31,122,116,0.15);
+  }
+  .t-item:not(:last-child)::before{
+    content:''; position:absolute; left:6px; top:20px; bottom:-14px; width:2px;
+    background:var(--line);
+  }
+  .t-time{ color:var(--purple); font-weight:700; font-size:14px; min-width:80px; }
+  .t-text{ color:var(--ink); font-size:15px; }
+
+  .bib-note{
+    background:#eef7f6;
+    border:1px solid rgba(31,122,116,0.25);
+    border-radius:16px;
+    padding:20px 26px;
+    max-width:700px;
+    margin:0 auto;
+    font-size:14px;
+    color:#2a4a48;
+    line-height:1.6;
+    text-align:center;
+  }
+  .bib-note strong{ color:var(--teal); }
+
+  .gallery-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+  .gallery-item{
+    aspect-ratio:4/3;
+    border-radius:16px;
+    overflow:hidden;
+    background:linear-gradient(135deg, rgba(91,44,130,0.08), rgba(31,122,116,0.08));
+    border:1px dashed rgba(15,35,40,0.2);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+    color:var(--muted); font-size:13px; text-align:center; padding:14px;
+    transition:transform .3s;
+  }
+  .gallery-item:hover{ transform:scale(1.03); }
+  .gallery-item img{ width:100%; height:100%; object-fit:cover; }
+  .gallery-item .icon{ font-size:26px; }
+
+  .route-box{ border-radius:20px; overflow:hidden; border:1px solid var(--line); background:var(--card); box-shadow:0 8px 24px rgba(15,35,40,0.05); }
+
+  .cta-box{
+    background:linear-gradient(135deg, var(--purple), var(--teal));
+    border-radius:26px; padding:60px 30px; text-align:center; position:relative; overflow:hidden;
+    box-shadow:0 20px 50px rgba(31,122,116,0.25);
+  }
+  .cta-box h2{ font-size:clamp(26px,4vw,36px); font-weight:900; margin-bottom:14px; color:#fff; }
+  .cta-box p{ color:rgba(255,255,255,0.9); margin-bottom:22px; font-size:15px; }
+  .fee-tag{
+    display:inline-block; background:rgba(0,0,0,0.2); padding:8px 20px;
+    border-radius:30px; font-size:14px; margin-bottom:26px; color:#fff; font-weight:700;
+  }
+  .cta-box .btn-primary{ background:#fff; color:var(--purple); box-shadow:0 10px 25px rgba(0,0,0,0.2); }
+  .cta-box .btn-primary:hover{ background:#fff; color:var(--purple); }
+
+  .ribbon-wrap{ display:flex; justify-content:center; margin:0 0 70px; }
+  .ribbon-wrap svg{ width:100%; max-width:900px; height:auto; }
+
+  .faq-item{ background:var(--card); border:1px solid var(--line); box-shadow:0 6px 18px rgba(15,35,40,0.04); border-radius:14px; margin-bottom:14px; overflow:hidden; }
+  .faq-q{ padding:20px 24px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:15px; color:var(--ink); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .35s ease, padding .35s ease; padding:0 24px; color:var(--muted); font-size:14px; line-height:1.6; }
+  .faq-item.open .faq-a{ max-height:200px; padding:0 24px 20px; }
+  .faq-arrow{ transition:transform .3s; color:var(--teal); font-size:18px; font-weight:900; }
+  .faq-item.open .faq-arrow{ transform:rotate(45deg); }
+
+  /* ---------- GET IN TOUCH (dark teal band, UST style) ---------- */
+  .contact-section{ background:linear-gradient(135deg,#123b39,#1f2f52); }
+  .contact-section .section-title, .contact-section .section-sub{ color:#fff; }
+  .contact-section .section-sub{ color:rgba(255,255,255,0.75); }
+  .contact-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-top:40px; }
+  .contact-card{
+    display:flex; align-items:flex-start; gap:16px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:18px; padding:26px;
+  }
+  .contact-icon{
+    width:46px; height:46px; border-radius:50%; flex-shrink:0;
+    background:linear-gradient(135deg,var(--teal2),var(--purple2));
+    display:flex; align-items:center; justify-content:center; font-size:20px;
+  }
+  .contact-card h4{ font-size:15px; margin-bottom:8px; color:#fff; }
+  .contact-card p{ font-size:14px; color:rgba(255,255,255,0.75); line-height:1.7; margin:0; }
+  .contact-card a{ color:#fff; text-decoration:underline; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ text-align:center; padding:50px 6% 40px; background:#0e2422; color:rgba(255,255,255,0.65); font-size:13px; }
+  footer .foot-logo-row{ display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:10px; }
+  footer .foot-logo{ font-weight:800; color:#fff; font-size:18px; }
+  footer .credit{ margin-top:22px; font-size:14px; color:var(--teal2); font-weight:600; letter-spacing:0.3px; }
+
+  .sticky-cta{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:200; display:none; }
+  @media (max-width:768px){
+    .nav-links{ display:none; }
+    .sticky-cta{ display:block; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="https://drive.google.com/uc?export=view&id=1Kx138lihhPtK5fBU6F3gelmh5GMJVxQE" alt="BSNL 5K Mini Marathon Logo" class="logo-img">
+  </div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#route">Route</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="#register" class="nav-cta">Register</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <img src="https://drive.google.com/uc?export=view&id=1Kx138lihhPtK5fBU6F3gelmh5GMJVxQE" alt="BSNL 5K Mini Marathon Logo" class="hero-logo">
+    <div class="hero-badge">📅 SUNDAY, 11 OCTOBER 2026 &nbsp;•&nbsp; 5:00 AM</div>
+    <h1>BSNL <span>5K</span> MINI MARATHON</h1>
+    <div class="tagline">Come Trivandrum, Let Us Run! 🏃</div>
+    <p class="sub">Lace up and join runners from across the city for a morning of energy, community, and pure runner's high through the streets of Trivandrum.</p>
+    <div class="organizer">Organized by BSNL Trivandrum BA &nbsp;•&nbsp; Registrations open from 21 September 2026</div>
+    <div class="hero-buttons">
+      <a href="#register" class="btn-primary">🎽 Register Now</a>
+      <a href="#schedule" class="btn-secondary">View Schedule</a>
+    </div>
+
+    <div class="runner-row">
+      <svg class="runner-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="52" cy="14" r="10" fill="currentColor"/><path d="M52 24 L42 54 L57 49 L67 79 M52 24 L67 44 L82 34 M42 54 L27 74 M57 49 L47 89" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="runner-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="52" cy="14" r="10" fill="currentColor"/><path d="M52 24 L38 50 L58 47 L72 76 M52 24 L70 40 L85 28 M38 50 L20 68 M58 47 L50 88" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="runner-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="52" cy="12" r="11" fill="currentColor"/><path d="M52 23 L40 56 L58 51 L70 84 M52 23 L70 42 L88 30 M40 56 L22 78 M58 51 L48 92" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="runner-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="52" cy="14" r="10" fill="currentColor"/><path d="M52 24 L44 52 L60 49 L68 78 M52 24 L66 46 L80 38 M44 52 L30 70 M60 49 L52 87" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="runner-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="52" cy="14" r="10" fill="currentColor"/><path d="M52 24 L42 54 L57 49 L67 79 M52 24 L67 44 L82 34 M42 54 L27 74 M57 49 L47 89" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div><div class="num" id="cd-days">00</div><div class="label">Days</div></div>
+      <div><div class="num" id="cd-hours">00</div><div class="label">Hours</div></div>
+      <div><div class="num" id="cd-mins">00</div><div class="label">Minutes</div></div>
+      <div><div class="num" id="cd-secs">00</div><div class="label">Seconds</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="org-strip">
+  <span>🏢 <strong>Bharat Sanchar Nigam Limited</strong></span>
+  <span class="dot"></span>
+  <span>Organized by <strong>BSNL Trivandrum BA</strong></span>
+  <span class="dot"></span>
+  <span>Start & Finish: <strong>BSNL Kerala Circle Office, PMG</strong></span>
+</div>
+
+<section id="about" class="reveal">
+  <h2 class="section-title">About the Run</h2>
+  <p class="section-sub">Run through the vibrant streets of Kerala's capital in a marathon that celebrates fitness, unity, and community spirit.</p>
+  <div style="max-width:750px;margin:0 auto 50px;background:var(--card);border:1px solid var(--line);box-shadow:0 8px 24px rgba(15,35,40,0.05);border-radius:20px;padding:34px 36px;text-align:center;">
+    <p style="color:var(--muted);font-size:15px;line-height:1.8;">
+      On <strong style="color:var(--purple);">11 October 2026</strong>, the BSNL 5K Mini Marathon invites runners of every age and fitness level to experience Thiruvananthapuram like never before — a scenic 5K course that winds through the heart of the city, starting and finishing at the BSNL Kerala Circle Office. Organized by BSNL Trivandrum BA, this event is a tribute to fitness, unity, and the spirit of community.
+    </p>
+  </div>
+  <h3 style="text-align:center;font-size:22px;font-weight:800;margin-bottom:30px;color:var(--ink);">Last Year in Numbers</h3>
+  <div class="stats">
+    <div class="stat-card"><div class="num">500+</div><div class="lbl">Runners</div></div>
+    <div class="stat-card"><div class="num">5 KM</div><div class="lbl">Race Route</div></div>
+    <div class="stat-card"><div class="num">20+</div><div class="lbl">Volunteers</div></div>
+    <div class="stat-card"><div class="num">100%</div><div class="lbl">Pure Fun</div></div>
+  </div>
+</section>
+
+<section class="reveal">
+  <h2 class="section-title">Why Join Us</h2>
+  <p class="section-sub">More than a run — it's a full morning experience.</p>
+  <div class="cards">
+    <div class="card"><div class="icon">🎵</div><h3>Zumba Warm-Up</h3><p>Get your legs fired up with a high-energy Zumba session before the flag-off.</p></div>
+    <div class="card"><div class="icon">🏅</div><h3>Finisher Medal</h3><p>Every runner who crosses the finish line takes home a medal to remember the day.</p></div>
+    <div class="card"><div class="icon">🥤</div><h3>Hydration & Refreshments</h3><p>Water stations along the route and refreshments waiting for you at the finish.</p></div>
+    <div class="card"><div class="icon">📸</div><h3>Photo Moments</h3><p>Photographers capturing your best race-day moments along the route.</p></div>
+    <div class="card"><div class="icon">👕</div><h3>Event T-Shirt</h3><p>A specially designed tee for every registered participant, given at kit collection.</p></div>
+    <div class="card"><div class="icon">🎉</div><h3>Community Vibe</h3><p>Run alongside people of all ages and fitness levels in a fun, welcoming atmosphere.</p></div>
+  </div>
+</section>
+
+<section id="schedule" class="reveal">
+  <h2 class="section-title">Race Day Schedule</h2>
+  <p class="section-sub">Here's how the morning will unfold.</p>
+  <div class="timeline">
+    <div class="t-item"><div class="t-dot"></div><div class="t-time">5:30 AM</div><div class="t-text">Reporting & Bib Collection</div></div>
+    <div class="t-item"><div class="t-dot"></div><div class="t-time">6:00 AM</div><div class="t-text">Zumba Warm-Up Session</div></div>
+    <div class="t-item"><div class="t-dot"></div><div class="t-time">6:30 AM</div><div class="t-text">Flag-Off — Race Begins</div></div>
+    <div class="t-item"><div class="t-dot"></div><div class="t-time">7:30 AM</div><div class="t-text">Finish Line & Refreshments</div></div>
+    <div class="t-item"><div class="t-dot"></div><div class="t-time">8:00 AM</div><div class="t-text">Medal Ceremony & Group Photo</div></div>
+  </div>
+  <div style="height:40px;"></div>
+  <div class="bib-note">
+    ℹ️ <strong>Please Note:</strong> This event uses a <strong>non-timed BIB</strong>. It serves as your participation identifier only — it is <strong>not</strong> an electronic chip/RFID bib and does not record individual finish time or GPS route tracking.
+  </div>
+</section>
+
+<section id="gallery" class="reveal">
+  <h2 class="section-title">Glimpses from Last Year</h2>
+  <p class="section-sub">Relive the energy of Edition 1 — watch the highlight reel and browse the full photo album.</p>
+
+  <div style="max-width:800px;margin:0 auto 40px;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(15,35,40,0.12);">
+    <div style="position:relative;padding-top:56.25%;">
+      <iframe src="https://www.youtube.com/embed/zbDHdd5mqno" title="BSNL 5K Mini Marathon — Last Year Highlights" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div style="text-align:center;">
+    <a href="https://photos.app.goo.gl/s16YEH1KFZAoTkTE7" target="_blank" class="btn-primary">📸 View Full Photo Album</a>
+  </div>
+
+  <div class="gallery-grid" style="margin-top:40px;">
+    <!-- Replace each tile below with your actual event photos:
+         <div class="gallery-item"><img src="YOUR-IMAGE-LINK.jpg" alt="BSNL 5K last year"></div> -->
+    <div class="gallery-item"><div class="icon">📷</div>Add Photo 1</div>
+    <div class="gallery-item"><div class="icon">📷</div>Add Photo 2</div>
+    <div class="gallery-item"><div class="icon">📷</div>Add Photo 3</div>
+    <div class="gallery-item"><div class="icon">📷</div>Add Photo 4</div>
+    <div class="gallery-item"><div class="icon">📷</div>Add Photo 5</div>
+    <div class="gallery-item"><div class="icon">📷</div>Add Photo 6</div>
+  </div>
+</section>
+
+<section id="route" class="reveal">
+  <h2 class="section-title">Race Route Map</h2>
+  <p class="section-sub">The 5K course winds through the heart of Trivandrum city.</p>
+  <div class="route-box">
+    <img src="https://drive.google.com/uc?export=view&id=1aLB0_sVn_oDYl3MgUe1ZyP9xl9xVNwU8" alt="BSNL 5K Mini Marathon route map">
+  </div>
+  <div style="text-align:center;margin-top:18px;">
+    <a href="https://www.google.com/maps/dir/BSNL+Kerala+Circle+Office,+O%2Fo,+CGMT,+JUNCTION,+Vikas+Bhavan+Rd,+POST,+PMG,+Thiruvananthapuram,+Kerala+695033/Law+College+Junction,+Barton+Hill+Colony,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695033/Varambassery+Junction,+Barton+Hill+Colony,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Mirandra+Junction,+Barton+Hill,+Barton+Hill+Colony,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Thampuranmukku+Junction,+Jai+Vihar,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Pattoor+Junction,+Thiruvananthapuram,+Kerala+695035/GH+Junction,+Jai+Vihar,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Martyrs'+Column,+GX32%2BG8W,+Palayam+Upas,+University+of+Kerala+Senate+House+Campus,+Palayam,+Thiruvananthapuram,+Kerala+695034/LMS+Wills+Hostel+For+Men,+LMS+Compound,+PMG,+Thiruvananthapuram,+Kerala+695033/BSNL+Kerala+Circle+Office,+O%2Fo,+CGMT,+JUNCTION,+Vikas+Bhavan+Rd,+POST,+PMG,+Thiruvananthapuram,+Kerala+695033/@8.5038576,76.9398248,16z" target="_blank" class="btn-secondary">🗺️ Open in Google Maps</a>
+  </div>
+  <div style="max-width:750px;margin:30px auto 0;background:var(--card);border:1px solid var(--line);box-shadow:0 8px 24px rgba(15,35,40,0.05);border-radius:18px;padding:28px 30px;">
+    <div style="font-weight:700;color:var(--teal);margin-bottom:14px;font-size:15px;">📍 Route Checkpoints</div>
+    <div style="color:var(--ink);font-size:14px;line-height:2;">
+      BSNL Kerala Circle Office → Law College Junction → Miranda Junction → Thampuranmukku Junction → Pattoor Junction → GH Junction → AKG Center Junction → Kerala University → Martyrs Column, Palayam → LMS → G V Raja Stadium → <strong style="color:var(--purple);">BSNL Kerala Circle Office (Finish)</strong>
+    </div>
+    <div style="margin-top:16px;font-size:13px;color:var(--muted);">💧 Hydration points along the route &nbsp;•&nbsp; 🎵 Zumba warm-up before flag-off</div>
+  </div>
+</section>
+
+<div class="ribbon-wrap">
+  <svg viewBox="0 0 900 70" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 35 Q 112 5, 225 35 T 450 35 T 675 35 T 900 35" stroke="url(#ribbonGrad)" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <defs>
+      <linearGradient id="ribbonGrad" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#5b2c82"/>
+        <stop offset="50%" stop-color="#f5a623"/>
+        <stop offset="100%" stop-color="#1f7a74"/>
+      </linearGradient>
+    </defs>
+  </svg>
+</div>
+
+<section id="register" class="reveal">
+  <div class="cta-box">
+    <div class="fee-tag">🐦 Early Bird: ₹600 (till 1 Oct 2026) &nbsp;|&nbsp; After: ₹700</div>
+    <h2>Ready to Run?</h2>
+    <p>Registrations open 21 September 2026 — register within the first 10 days to lock in the early bird price!</p>
+    <a href="https://forms.google.com/YOUR-FORM-LINK-HERE" target="_blank" class="btn-primary">📝 Register via Google Form</a>
+    <div style="margin-top:28px;font-size:13px;color:rgba(255,255,255,0.85);">
+      📍 Start &amp; Finish: <strong>BSNL Kerala Circle Office, PMG, Trivandrum</strong><br>
+      📞 Queries: <strong>9447499099</strong> &nbsp;|&nbsp; <strong>9449014055</strong> &nbsp;<span style="opacity:0.8;">(also on WhatsApp)</span>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="reveal">
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <div style="max-width:700px;margin:0 auto;">
+    <div class="faq-item">
+      <div class="faq-q">Who can participate? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Everyone! The 5K is open to all age groups and fitness levels — whether you're a first-timer or a seasoned runner.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is this a timed race? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">No. This event uses a non-timed BIB for participation identification only — there is no individual chip timing or GPS route tracking.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What does the registration fee include? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Your fee covers the event T-shirt, bib number, finisher medal, hydration on route, and refreshments at the finish line.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What is the early bird pricing? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Registrations open 21 September 2026. Register within the first 10 days (by 1 October 2026) to pay ₹600. From 2 October 2026 onward, the fee is ₹700.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I get my bib number and T-shirt? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Kit collection details will be shared with all registered participants closer to the event date via WhatsApp/email.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is there a last date for registration? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Registrations close once we hit capacity or a few days before the event — so it's best to register early!</div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section">
+  <div style="max-width:1200px;margin:0 auto;padding:90px 6%;">
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="section-sub">Questions about registration, the route, or race day? We're here to help.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <div>
+          <h4>Phone / WhatsApp</h4>
+          <p>+91 9447499099<br>+91 9449014055<br><span style="opacity:0.8;">(both numbers available on WhatsApp)</span></p>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <h4>Email</h4>
+          <p><a href="mailto:marathonbsnltvm@gmail.com">marathonbsnltvm@gmail.com</a></p>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div>
+          <h4>Address</h4>
+          <p>BSNL Bhavan<br>O/o PGMT<br>Uppalam Road, Trivandrum</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-logo-row">
+    <img src="https://drive.google.com/uc?export=view&id=1Kx138lihhPtK5fBU6F3gelmh5GMJVxQE" alt="BSNL 5K Mini Marathon Logo" style="height:56px;">
+  </div>
+  <p>Organized by BSNL Trivandrum BA</p>
+  <p style="margin-top:10px;">BSNL Bhavan, O/o PGMT, Uppalam Road, Trivandrum</p>
+  <div class="credit">Portal designed by Sarath Ganga S, JE</div>
+</footer>
+
+<a href="#register" class="sticky-cta btn-primary">🎽 Register Now</a>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click', ()=> q.parentElement.classList.toggle('open'));
+  });
+
+  const raceDate = new Date('2026-10-11T06:30:00').getTime();
+  function updateCountdown(){
+    const now = new Date().getTime();
+    const diff = raceDate - now;
+    if(diff <= 0){
+      document.getElementById('countdown').innerHTML = '<div style="font-size:20px;color:var(--teal);background:#fff;padding:14px 20px;border-radius:14px;">🎉 Race Day is Here!</div>';
+      return;
+    }
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs = Math.floor((diff % (1000*60)) / 1000);
+    document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); observer.unobserve(e.target); } });
+  }, { threshold:0.12 });
+  revealEls.forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>
