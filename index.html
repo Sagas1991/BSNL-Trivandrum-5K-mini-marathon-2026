@@ -144,6 +144,37 @@
 
   .hero-organizer{ margin-top:26px; font-size:13px; color:rgba(255,255,255,0.6); font-weight:500; }
 
+  /* ---------- FIX: restore styling for hero text elements ---------- */
+  .hero-inner{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:flex-start; max-width:800px; }
+  .hero-logo{ height:110px; margin-bottom:22px; filter:drop-shadow(0 8px 20px rgba(0,0,0,0.4)); }
+  .hero-badge{
+    background:rgba(255,255,255,0.14);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.3);
+    color:#fff;
+    padding:8px 20px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    margin-bottom:22px;
+  }
+  .hero .tagline{
+    font-size:clamp(16px,2.2vw,22px);
+    font-weight:700;
+    color:var(--teal2);
+    letter-spacing:0.3px;
+    margin-bottom:18px;
+    font-style:normal;
+    text-transform:none;
+  }
+  .hero .organizer{
+    font-size:13px;
+    color:rgba(255,255,255,0.7);
+    margin-bottom:34px;
+    font-weight:600;
+  }
+
   .runner-icon{ width:32px; height:32px; flex-shrink:0; }
   .runner-row{ display:flex; align-items:flex-end; gap:24px; justify-content:center; margin-top:40px; opacity:0.9; }
   .runner-row .runner-icon:nth-child(1){ color:var(--purple); animation:bob 2.6s ease-in-out infinite; }
@@ -158,8 +189,8 @@
     border-radius:14px; overflow:hidden; min-width:78px;
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
   }
-  .countdown .num{ background:var(--teal); color:#fff; font-size:28px; font-weight:800; padding:14px 0 8px; }
-  .countdown .label{ background:var(--purple); color:#fff; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:6px 0 10px; }
+  .countdown .num{ background:var(--teal); color:#fff; font-size:28px; font-weight:800; padding:14px 0 8px; text-align:center; }
+  .countdown .label{ background:var(--purple); color:#fff; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:6px 0 10px; text-align:center; }
 
   .org-strip{
     display:flex; align-items:center; justify-content:center; gap:14px;
@@ -280,7 +311,7 @@
   .contact-section{ background:linear-gradient(135deg,#123b39,#1f2f52); }
   .contact-section .section-title, .contact-section .section-sub{ color:#fff; }
   .contact-section .section-sub{ color:rgba(255,255,255,0.75); }
-  .contact-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-top:40px; }
+  .contact-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-top:40px; align-items:start; }
   .contact-card{
     display:flex; align-items:flex-start; gap:16px;
     background:rgba(255,255,255,0.06);
@@ -313,7 +344,7 @@
 
 <nav>
   <div class="logo">
-    <img src="https://drive.google.com/uc?export=view&id=1Kx138lihhPtK5fBU6F3gelmh5GMJVxQE" alt="BSNL 5K Mini Marathon Logo" class="logo-img">
+    <img src="images/logo.png" alt="BSNL 5K Mini Marathon Logo" class="logo-img">
   </div>
   <div class="nav-links">
     <a href="#about">About</a>
@@ -327,7 +358,7 @@
 
 <section class="hero">
   <div class="hero-inner">
-    <img src="https://drive.google.com/uc?export=view&id=1Kx138lihhPtK5fBU6F3gelmh5GMJVxQE" alt="BSNL 5K Mini Marathon Logo" class="hero-logo">
+    <img src="images/logo.png" alt="BSNL 5K Mini Marathon Logo" class="hero-logo">
     <div class="hero-badge">📅 SUNDAY, 11 OCTOBER 2026 &nbsp;•&nbsp; 5:00 AM</div>
     <h1>BSNL <span>5K</span> MINI MARATHON</h1>
     <div class="tagline">Come Trivandrum, Let Us Run! 🏃</div>
@@ -423,15 +454,13 @@
     <a href="https://photos.app.goo.gl/s16YEH1KFZAoTkTE7" target="_blank" class="btn-primary">📸 View Full Photo Album</a>
   </div>
 
-  <div class="gallery-grid" style="margin-top:40px;">
-    <!-- Replace each tile below with your actual event photos:
-         <div class="gallery-item"><img src="YOUR-IMAGE-LINK.jpg" alt="BSNL 5K last year"></div> -->
-    <div class="gallery-item"><div class="icon">📷</div>Add Photo 1</div>
-    <div class="gallery-item"><div class="icon">📷</div>Add Photo 2</div>
-    <div class="gallery-item"><div class="icon">📷</div>Add Photo 3</div>
-    <div class="gallery-item"><div class="icon">📷</div>Add Photo 4</div>
-    <div class="gallery-item"><div class="icon">📷</div>Add Photo 5</div>
-    <div class="gallery-item"><div class="icon">📷</div>Add Photo 6</div>
+  <div style="max-width:800px;margin:40px auto 0;background:var(--card);border:1px solid var(--line);box-shadow:0 8px 24px rgba(15,35,40,0.05);border-radius:20px;padding:40px 34px;text-align:center;">
+    <div style="font-size:40px;margin-bottom:14px;">🖼️</div>
+    <h3 style="font-size:19px;color:var(--ink);margin-bottom:10px;">Hundreds of Moments, All in One Place</h3>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;max-width:520px;margin:0 auto 26px;">
+      Every photo from Edition 1 — the warm-up, the run, the finish line, the celebrations — is in our shared Google Photos album. Browse, relive, and download your favorites.
+    </p>
+    <a href="https://photos.app.goo.gl/s16YEH1KFZAoTkTE7" target="_blank" class="btn-secondary">Open the Full Album →</a>
   </div>
 </section>
 
@@ -439,7 +468,7 @@
   <h2 class="section-title">Race Route Map</h2>
   <p class="section-sub">The 5K course winds through the heart of Trivandrum city.</p>
   <div class="route-box">
-    <img src="https://drive.google.com/uc?export=view&id=1aLB0_sVn_oDYl3MgUe1ZyP9xl9xVNwU8" alt="BSNL 5K Mini Marathon route map">
+    <img src="images/route-map.jpg" alt="BSNL 5K Mini Marathon route map">
   </div>
   <div style="text-align:center;margin-top:18px;">
     <a href="https://www.google.com/maps/dir/BSNL+Kerala+Circle+Office,+O%2Fo,+CGMT,+JUNCTION,+Vikas+Bhavan+Rd,+POST,+PMG,+Thiruvananthapuram,+Kerala+695033/Law+College+Junction,+Barton+Hill+Colony,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695033/Varambassery+Junction,+Barton+Hill+Colony,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Mirandra+Junction,+Barton+Hill,+Barton+Hill+Colony,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Thampuranmukku+Junction,+Jai+Vihar,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Pattoor+Junction,+Thiruvananthapuram,+Kerala+695035/GH+Junction,+Jai+Vihar,+Kunnukuzhy,+Thiruvananthapuram,+Kerala+695035/Martyrs'+Column,+GX32%2BG8W,+Palayam+Upas,+University+of+Kerala+Senate+House+Campus,+Palayam,+Thiruvananthapuram,+Kerala+695034/LMS+Wills+Hostel+For+Men,+LMS+Compound,+PMG,+Thiruvananthapuram,+Kerala+695033/BSNL+Kerala+Circle+Office,+O%2Fo,+CGMT,+JUNCTION,+Vikas+Bhavan+Rd,+POST,+PMG,+Thiruvananthapuram,+Kerala+695033/@8.5038576,76.9398248,16z" target="_blank" class="btn-secondary">🗺️ Open in Google Maps</a>
@@ -541,7 +570,7 @@
 
 <footer>
   <div class="foot-logo-row">
-    <img src="https://drive.google.com/uc?export=view&id=1Kx138lihhPtK5fBU6F3gelmh5GMJVxQE" alt="BSNL 5K Mini Marathon Logo" style="height:56px;">
+    <img src="images/logo.png" alt="BSNL 5K Mini Marathon Logo" style="height:56px;">
   </div>
   <p>Organized by BSNL Trivandrum BA</p>
   <p style="margin-top:10px;">BSNL Bhavan, O/o PGMT, Uppalam Road, Trivandrum</p>
